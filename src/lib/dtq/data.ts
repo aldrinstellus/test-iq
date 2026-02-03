@@ -87,8 +87,9 @@ export const categories: Category[] = categoryNames.map((name, index) => {
   };
 });
 
-// Pre-generated test runs
+// Pre-generated test runs (40 total to match reference)
 export const testRuns: TestRun[] = [
+  // Recent runs (last 7 days)
   { id: 'r1', featureId: 'f1', featureName: 'xAPI / LRS Integration', executedAt: new Date('2026-02-02'), status: 'failed', totalTests: 24, passedTests: 21, failedTests: 3, duration: 8, issues: [{ id: 'i1', testCaseName: 'Test Case 1 - xAPI / LRS Integration', severity: 'high', errorMessage: 'Expected element to be visible but timed out after 30000ms', stackTrace: 'Error: Timeout waiting for element\n    at waitForSelector (/tests/xapi-lrs.spec.ts:45:12)\n    at Object.<anonymous> (/tests/xapi-lrs.spec.ts:52:5)' }] },
   { id: 'r2', featureId: 'f2', featureName: 'Multi-Tenant Configuration', executedAt: new Date('2026-02-01'), status: 'passed', totalTests: 18, passedTests: 18, failedTests: 0, duration: 6 },
   { id: 'r3', featureId: 'f6', featureName: 'Adaptive Learning Paths', executedAt: new Date('2026-02-01'), status: 'failed', totalTests: 22, passedTests: 19, failedTests: 3, duration: 9, issues: [{ id: 'i2', testCaseName: 'Test Case 2 - Adaptive Learning', severity: 'medium', errorMessage: 'Assertion failed: expected 5 to equal 4', stackTrace: 'AssertionError: expected 5 to equal 4\n    at Context.<anonymous> (/tests/adaptive-learning.spec.ts:78:14)' }] },
@@ -99,11 +100,39 @@ export const testRuns: TestRun[] = [
   { id: 'r8', featureId: 'f28', featureName: 'User Management', executedAt: new Date('2026-01-29'), status: 'passed', totalTests: 25, passedTests: 25, failedTests: 0, duration: 8 },
   { id: 'r9', featureId: 'f34', featureName: 'Quiz Engine', executedAt: new Date('2026-01-29'), status: 'passed', totalTests: 30, passedTests: 30, failedTests: 0, duration: 10 },
   { id: 'r10', featureId: 'f42', featureName: 'User Onboarding', executedAt: new Date('2026-01-28'), status: 'passed', totalTests: 18, passedTests: 18, failedTests: 0, duration: 6 },
+  // Week 2
   { id: 'r11', featureId: 'f45', featureName: 'Mobile Experience', executedAt: new Date('2026-01-28'), status: 'failed', totalTests: 22, passedTests: 18, failedTests: 4, duration: 8, issues: [{ id: 'i4', testCaseName: 'Test Case 3 - Responsive layout', severity: 'medium', errorMessage: 'Element not clickable at point (320, 480)', stackTrace: 'ElementClickInterceptedError: Element not clickable\n    at click (/tests/mobile.spec.ts:92:10)' }] },
   { id: 'r12', featureId: 'f3', featureName: 'Advanced Compliance Tracking', executedAt: new Date('2026-01-27'), status: 'passed', totalTests: 14, passedTests: 14, failedTests: 0, duration: 5 },
   { id: 'r13', featureId: 'f7', featureName: 'Personalized Recommendations', executedAt: new Date('2026-01-27'), status: 'passed', totalTests: 16, passedTests: 16, failedTests: 0, duration: 5 },
   { id: 'r14', featureId: 'f19', featureName: 'Discussion Forums', executedAt: new Date('2026-01-26'), status: 'passed', totalTests: 20, passedTests: 20, failedTests: 0, duration: 7 },
   { id: 'r15', featureId: 'f31', featureName: 'Integration Hub', executedAt: new Date('2026-01-26'), status: 'failed', totalTests: 18, passedTests: 15, failedTests: 3, duration: 7, issues: [{ id: 'i5', testCaseName: 'Test Case 2 - OAuth flow', severity: 'high', errorMessage: 'OAuth callback URL mismatch', stackTrace: 'OAuthError: Callback URL mismatch\n    at verifyCallback (/tests/integration-hub.spec.ts:67:8)' }] },
+  { id: 'r16', featureId: 'f5', featureName: 'Enterprise SSO', executedAt: new Date('2026-01-25'), status: 'passed', totalTests: 20, passedTests: 20, failedTests: 0, duration: 7 },
+  { id: 'r17', featureId: 'f8', featureName: 'Skill Gap Analysis', executedAt: new Date('2026-01-25'), status: 'passed', totalTests: 18, passedTests: 18, failedTests: 0, duration: 6 },
+  { id: 'r18', featureId: 'f13', featureName: 'Compliance Reports', executedAt: new Date('2026-01-24'), status: 'passed', totalTests: 15, passedTests: 15, failedTests: 0, duration: 5 },
+  { id: 'r19', featureId: 'f16', featureName: 'Self-Enrollment', executedAt: new Date('2026-01-24'), status: 'passed', totalTests: 22, passedTests: 22, failedTests: 0, duration: 7 },
+  { id: 'r20', featureId: 'f20', featureName: 'Peer Reviews', executedAt: new Date('2026-01-23'), status: 'passed', totalTests: 14, passedTests: 14, failedTests: 0, duration: 5 },
+  // Week 3
+  { id: 'r21', featureId: 'f24', featureName: 'Content Authoring', executedAt: new Date('2026-01-23'), status: 'failed', totalTests: 28, passedTests: 24, failedTests: 4, duration: 9, issues: [{ id: 'i6', testCaseName: 'Test Case 4 - Rich text editor', severity: 'medium', errorMessage: 'Editor failed to initialize', stackTrace: 'EditorError: Failed to mount\n    at initEditor (/tests/content-authoring.spec.ts:45:8)' }] },
+  { id: 'r22', featureId: 'f27', featureName: 'Course Versioning', executedAt: new Date('2026-01-22'), status: 'passed', totalTests: 16, passedTests: 16, failedTests: 0, duration: 5 },
+  { id: 'r23', featureId: 'f29', featureName: 'Role-Based Access Control', executedAt: new Date('2026-01-22'), status: 'passed', totalTests: 24, passedTests: 24, failedTests: 0, duration: 8 },
+  { id: 'r24', featureId: 'f32', featureName: 'Audit Logs', executedAt: new Date('2026-01-21'), status: 'passed', totalTests: 12, passedTests: 12, failedTests: 0, duration: 4 },
+  { id: 'r25', featureId: 'f35', featureName: 'Certification Paths', executedAt: new Date('2026-01-21'), status: 'passed', totalTests: 20, passedTests: 20, failedTests: 0, duration: 7 },
+  { id: 'r26', featureId: 'f38', featureName: 'Webinar Integration', executedAt: new Date('2026-01-20'), status: 'failed', totalTests: 18, passedTests: 15, failedTests: 3, duration: 6, issues: [{ id: 'i7', testCaseName: 'Test Case 1 - Zoom integration', severity: 'high', errorMessage: 'API authentication failed', stackTrace: 'AuthError: Invalid API key\n    at authenticateZoom (/tests/webinar.spec.ts:28:12)' }] },
+  { id: 'r27', featureId: 'f40', featureName: 'Attendance Tracking', executedAt: new Date('2026-01-20'), status: 'passed', totalTests: 15, passedTests: 15, failedTests: 0, duration: 5 },
+  { id: 'r28', featureId: 'f43', featureName: 'Course Completion Flow', executedAt: new Date('2026-01-19'), status: 'passed', totalTests: 22, passedTests: 22, failedTests: 0, duration: 7 },
+  { id: 'r29', featureId: 'f46', featureName: 'Search & Discovery', executedAt: new Date('2026-01-19'), status: 'passed', totalTests: 18, passedTests: 18, failedTests: 0, duration: 6 },
+  { id: 'r30', featureId: 'f4', featureName: 'Custom Branding Engine', executedAt: new Date('2026-01-18'), status: 'passed', totalTests: 14, passedTests: 14, failedTests: 0, duration: 5 },
+  // Week 4
+  { id: 'r31', featureId: 'f9', featureName: 'Learning Goals Tracking', executedAt: new Date('2026-01-18'), status: 'passed', totalTests: 16, passedTests: 16, failedTests: 0, duration: 5 },
+  { id: 'r32', featureId: 'f11', featureName: 'Custom Report Builder', executedAt: new Date('2026-01-17'), status: 'failed', totalTests: 20, passedTests: 17, failedTests: 3, duration: 7, issues: [{ id: 'i8', testCaseName: 'Test Case 2 - Export function', severity: 'medium', errorMessage: 'PDF generation timeout', stackTrace: 'TimeoutError: PDF generation exceeded 30s\n    at generatePDF (/tests/report-builder.spec.ts:62:10)' }] },
+  { id: 'r33', featureId: 'f14', featureName: 'Export Center', executedAt: new Date('2026-01-17'), status: 'passed', totalTests: 12, passedTests: 12, failedTests: 0, duration: 4 },
+  { id: 'r34', featureId: 'f17', featureName: 'Manager-Assigned Learning', executedAt: new Date('2026-01-16'), status: 'passed', totalTests: 18, passedTests: 18, failedTests: 0, duration: 6 },
+  { id: 'r35', featureId: 'f21', featureName: 'Learning Groups', executedAt: new Date('2026-01-16'), status: 'passed', totalTests: 14, passedTests: 14, failedTests: 0, duration: 5 },
+  { id: 'r36', featureId: 'f25', featureName: 'Assessment Builder', executedAt: new Date('2026-01-15'), status: 'passed', totalTests: 22, passedTests: 22, failedTests: 0, duration: 7 },
+  { id: 'r37', featureId: 'f30', featureName: 'Notification Settings', executedAt: new Date('2026-01-15'), status: 'passed', totalTests: 10, passedTests: 10, failedTests: 0, duration: 3 },
+  { id: 'r38', featureId: 'f36', featureName: 'Proctoring Support', executedAt: new Date('2026-01-14'), status: 'failed', totalTests: 16, passedTests: 13, failedTests: 3, duration: 6, issues: [{ id: 'i9', testCaseName: 'Test Case 1 - Camera access', severity: 'high', errorMessage: 'Camera permission denied', stackTrace: 'PermissionError: Camera access denied\n    at requestCamera (/tests/proctoring.spec.ts:34:8)' }] },
+  { id: 'r39', featureId: 'f39', featureName: 'ILT Scheduling', executedAt: new Date('2026-01-14'), status: 'passed', totalTests: 18, passedTests: 18, failedTests: 0, duration: 6 },
+  { id: 'r40', featureId: 'f41', featureName: 'Virtual Classroom', executedAt: new Date('2026-01-13'), status: 'failed', totalTests: 20, passedTests: 16, failedTests: 4, duration: 8, issues: [{ id: 'i10', testCaseName: 'Test Case 3 - Screen sharing', severity: 'medium', errorMessage: 'Screen share failed to initialize', stackTrace: 'MediaError: getDisplayMedia not supported\n    at startScreenShare (/tests/virtual-classroom.spec.ts:78:12)' }] },
 ];
 
 // Pre-generated daily metrics for 30 days
