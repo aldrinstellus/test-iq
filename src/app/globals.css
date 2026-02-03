@@ -615,3 +615,16 @@ body {
   background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
   height: 1px;
 }
+
+/* =============================================================================
+   HIDE NEXT.JS DEV INDICATORS
+   ============================================================================= */
+
+/* Hide Next.js error overlay and build indicators */
+nextjs-portal,
+[data-nextjs-dialog],
+[data-nextjs-dialog-overlay],
+[data-nextjs-toast],
+nextjs-dev-tools-indicator {
+  display: none !important;
+}

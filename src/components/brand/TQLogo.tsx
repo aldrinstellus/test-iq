@@ -148,7 +148,7 @@ export function TQLogo({ size = "md", showText = false, className = "" }: TQLogo
             className="text-[var(--text-primary)] font-medium leading-tight tracking-tight"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
-            <span className="font-light text-[var(--text-muted)]">digital</span>
+            <span className="font-light text-[var(--text-muted)]">AI</span>
             {" "}
             <span className="text-[#ff3366]">testing</span>
           </span>
