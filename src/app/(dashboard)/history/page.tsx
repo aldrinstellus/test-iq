@@ -9,9 +9,12 @@ import {
 } from 'lucide-react';
 import MetricCard from '@/components/dtq/MetricCard';
 import TrendChart from '@/components/dtq/TrendChart';
-import { dailyMetrics } from '@/lib/dtq/data';
+import LiveIndicator from '@/components/dtq/LiveIndicator';
+import { useRealTimeSimulation } from '@/hooks/useRealTimeSimulation';
 
 export default function HistoryPage() {
+  const { dailyMetrics, lastUpdate, isLive, toggleLive } = useRealTimeSimulation(true);
+
   // Calculate 30-day averages
   const avgPassRate = Math.round(
     dailyMetrics.reduce((sum, m) => sum + m.passRate, 0) / dailyMetrics.length * 10
@@ -38,15 +41,18 @@ export default function HistoryPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <h1 className="text-2xl font-bold gradient-text">Team Performance Metrics</h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
-          Monitor team effectiveness and quality trends over the past 30 days
-        </p>
-      </motion.div>
+      <div className="flex items-start justify-between">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h1 className="text-2xl font-bold gradient-text">Team Performance Metrics</h1>
+          <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
+            Monitor team effectiveness and quality trends over the past 30 days
+          </p>
+        </motion.div>
+        <LiveIndicator lastUpdate={lastUpdate} isLive={isLive} onToggle={toggleLive} />
+      </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

@@ -13,17 +13,22 @@ import HighRiskBanner from '@/components/dtq/HighRiskBanner';
 import TrendChart from '@/components/dtq/TrendChart';
 import FeatureCoverage from '@/components/dtq/FeatureCoverage';
 import AIAssistant from '@/components/dtq/AIAssistant';
+import LiveIndicator from '@/components/dtq/LiveIndicator';
 import { usePersona } from '../layout';
-import {
-  summaryMetrics,
-  highRiskFeatures,
-  dailyMetrics,
-  categories,
-  personas,
-} from '@/lib/dtq/data';
+import { useRealTimeSimulation } from '@/hooks/useRealTimeSimulation';
 
 export default function DashboardPage() {
   const { persona } = usePersona();
+  const {
+    summaryMetrics,
+    highRiskFeatures,
+    dailyMetrics,
+    categories,
+    personas,
+    lastUpdate,
+    isLive,
+    toggleLive,
+  } = useRealTimeSimulation(true);
 
   const currentPersona = personas.find(p => p.id === persona) || personas[1];
 
@@ -41,15 +46,18 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <h1 className="text-2xl font-bold gradient-text">Test IQ Dashboard</h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
-          AI-Powered Testing Intelligence for Enterprise Quality
-        </p>
-      </motion.div>
+      <div className="flex items-start justify-between">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h1 className="text-2xl font-bold gradient-text">Test IQ Dashboard</h1>
+          <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
+            AI-Powered Testing Intelligence for Enterprise Quality
+          </p>
+        </motion.div>
+        <LiveIndicator lastUpdate={lastUpdate} isLive={isLive} onToggle={toggleLive} />
+      </div>
 
       {/* Persona Card */}
       <PersonaCard persona={persona} />
