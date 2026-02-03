@@ -1,40 +1,84 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ChevronDown,
   ChevronRight,
   Search,
   CheckCircle2,
   AlertCircle,
   AlertTriangle,
   Bug,
+  BarChart3,
 } from 'lucide-react';
 import { Category, Feature } from '@/lib/dtq/types';
 import { cn } from '@/lib/utils';
 
 interface FeatureCoverageProps {
   categories: Category[];
+  onFeatureClick?: (feature: Feature) => void;
+  onCategoryClick?: (category: Category) => void;
 }
 
-export default function FeatureCoverage({ categories }: FeatureCoverageProps) {
+export default function FeatureCoverage({
+  categories,
+  onFeatureClick,
+  onCategoryClick,
+}: FeatureCoverageProps) {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [hoveredFeature, setHoveredFeature] = useState<string | null>(null);
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
 
   const totalFeatures = categories.reduce((sum, c) => sum + c.features.length, 0);
 
-  const filteredCategories = categories.map(category => ({
-    ...category,
-    features: category.features.filter(f =>
-      f.name.toLowerCase().includes(searchQuery.toLowerCase())
-    ),
-  })).filter(c => c.features.length > 0);
+  const filteredCategories = useMemo(() => {
+    return categories.map(category => ({
+      ...category,
+      features: category.features.filter(f =>
+        f.name.toLowerCase().includes(searchQuery.toLowerCase())
+      ),
+    })).filter(c => c.features.length > 0);
+  }, [categories, searchQuery]);
 
   const getRiskColor = (score: number) => {
     if (score >= 40) return 'var(--risk-high)';
     if (score >= 20) return 'var(--risk-medium)';
     return 'var(--risk-low)';
+  };
+
+  // Highlight matching text in search results
+  const highlightMatch = (text: string, query: string) => {
+    if (!query) return text;
+    const parts = text.split(new RegExp(`(${query})`, 'gi'));
+    return (
+      <>
+        {parts.map((part, i) =>
+          part.toLowerCase() === query.toLowerCase() ? (
+            <span
+              key={i}
+              className="px-0.5 rounded"
+              style={{
+                background: 'var(--accent-primary-soft)',
+                color: 'var(--accent-primary)',
+              }}
+            >
+              {part}
+            </span>
+          ) : (
+            part
+          )
+        )}
+      </>
+    );
+  };
+
+  const handleCategoryHeaderClick = (category: Category, e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest('.category-analytics-btn')) {
+      onCategoryClick?.(category);
+    } else {
+      setExpandedCategory(expandedCategory === category.id ? null : category.id);
+    }
   };
 
   return (
@@ -72,7 +116,7 @@ export default function FeatureCoverage({ categories }: FeatureCoverageProps) {
           </div>
         </div>
 
-        {/* Search */}
+        {/* Search with glow effect */}
         <div className="relative">
           <Search
             className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4"
@@ -83,7 +127,7 @@ export default function FeatureCoverage({ categories }: FeatureCoverageProps) {
             placeholder="Search features..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm outline-none transition-colors"
+            className="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm outline-none transition-all input-glow"
             style={{
               background: 'var(--bg-tertiary)',
               border: '1px solid var(--border-subtle)',
@@ -98,20 +142,24 @@ export default function FeatureCoverage({ categories }: FeatureCoverageProps) {
         {filteredCategories.map((category) => (
           <div key={category.id}>
             {/* Category Header */}
-            <button
-              onClick={() => setExpandedCategory(
-                expandedCategory === category.id ? null : category.id
+            <motion.div
+              className={cn(
+                'w-full flex items-center justify-between p-4 transition-colors cursor-pointer',
+                hoveredCategory === category.id && 'bg-[var(--bg-tertiary)]'
               )}
-              className="w-full flex items-center justify-between p-4 hover:bg-[var(--bg-tertiary)] transition-colors"
+              onMouseEnter={() => setHoveredCategory(category.id)}
+              onMouseLeave={() => setHoveredCategory(null)}
+              onClick={(e) => handleCategoryHeaderClick(category, e)}
             >
               <div className="flex items-center gap-3">
-                {expandedCategory === category.id ? (
-                  <ChevronDown className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
-                ) : (
+                <motion.div
+                  animate={{ rotate: expandedCategory === category.id ? 90 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <ChevronRight className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
-                )}
+                </motion.div>
                 <span className="font-medium" style={{ color: 'var(--text-primary)' }}>
-                  {category.name}
+                  {highlightMatch(category.name, searchQuery)}
                 </span>
                 <span
                   className="text-xs px-2 py-0.5 rounded-full"
@@ -141,8 +189,26 @@ export default function FeatureCoverage({ categories }: FeatureCoverageProps) {
                     <span>{category.totalDefects} Open</span>
                   </div>
                 )}
+
+                {/* Category analytics button */}
+                <motion.button
+                  className="category-analytics-btn p-2 rounded-lg transition-colors"
+                  style={{
+                    background: hoveredCategory === category.id ? 'var(--accent-primary-soft)' : 'transparent',
+                    color: hoveredCategory === category.id ? 'var(--accent-primary)' : 'var(--text-muted)',
+                  }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onCategoryClick?.(category);
+                  }}
+                  title="View category analytics"
+                >
+                  <BarChart3 className="w-4 h-4" />
+                </motion.button>
               </div>
-            </button>
+            </motion.div>
 
             {/* Expanded Features Table */}
             <AnimatePresence>
@@ -151,7 +217,7 @@ export default function FeatureCoverage({ categories }: FeatureCoverageProps) {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   className="overflow-hidden"
                 >
                   <div className="px-4 pb-4">
@@ -174,18 +240,51 @@ export default function FeatureCoverage({ categories }: FeatureCoverageProps) {
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: idx * 0.03 }}
-                            className="border-t"
+                            className={cn(
+                              'border-t cursor-pointer transition-all',
+                              hoveredFeature === feature.id && 'bg-[var(--bg-tertiary)]'
+                            )}
                             style={{ borderColor: 'var(--border-subtle)' }}
+                            onMouseEnter={() => setHoveredFeature(feature.id)}
+                            onMouseLeave={() => setHoveredFeature(null)}
+                            onClick={() => onFeatureClick?.(feature)}
                           >
-                            <td className="py-3 px-3" style={{ color: 'var(--text-primary)' }}>
-                              {feature.name}
+                            {/* Left border indicator on hover */}
+                            <td
+                              className="py-3 px-3 relative"
+                              style={{ color: 'var(--text-primary)' }}
+                            >
+                              <motion.div
+                                className="absolute left-0 top-0 bottom-0 w-0.5 rounded-r"
+                                initial={{ opacity: 0 }}
+                                animate={{
+                                  opacity: hoveredFeature === feature.id ? 1 : 0,
+                                  background: 'var(--accent-primary)',
+                                }}
+                                transition={{ duration: 0.2 }}
+                              />
+                              <div className="flex items-center gap-2">
+                                {highlightMatch(feature.name, searchQuery)}
+                                {hoveredFeature === feature.id && (
+                                  <motion.span
+                                    initial={{ opacity: 0, x: -5 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    className="text-xs"
+                                    style={{ color: 'var(--accent-primary)' }}
+                                  >
+                                    View details
+                                  </motion.span>
+                                )}
+                              </div>
                             </td>
                             <td className="py-3 px-3">
                               <div className="flex items-center gap-2">
                                 <div className="progress-bar w-20 h-2">
-                                  <div
+                                  <motion.div
                                     className="progress-bar-fill"
-                                    style={{ width: `${feature.coverage}%` }}
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${feature.coverage}%` }}
+                                    transition={{ duration: 0.5, delay: idx * 0.03 }}
                                   />
                                 </div>
                                 <span style={{ color: 'var(--text-secondary)' }}>
@@ -209,7 +308,11 @@ export default function FeatureCoverage({ categories }: FeatureCoverageProps) {
                               </div>
                             </td>
                             <td className="py-3 px-3" style={{ color: 'var(--text-secondary)' }}>
-                              {feature.openDefects} / {feature.closedDefects} closed
+                              <span style={{ color: feature.openDefects > 0 ? 'var(--status-error)' : 'inherit' }}>
+                                {feature.openDefects}
+                              </span>
+                              {' / '}
+                              {feature.closedDefects} closed
                             </td>
                             <td className="py-3 px-3">
                               <span
@@ -236,6 +339,20 @@ export default function FeatureCoverage({ categories }: FeatureCoverageProps) {
           </div>
         ))}
       </div>
+
+      {/* Empty state */}
+      {filteredCategories.length === 0 && searchQuery && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="p-8 text-center"
+        >
+          <Search className="w-8 h-8 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} />
+          <p style={{ color: 'var(--text-muted)' }}>
+            No features found matching &quot;{searchQuery}&quot;
+          </p>
+        </motion.div>
+      )}
     </motion.div>
   );
 }
