@@ -152,7 +152,6 @@ export function TQLogo({ size = "md", showText = false, className = "" }: TQLogo
             {" "}
             <span className="text-[#ff3366]">testing</span>
           </span>
-          <span className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Testing Intelligence</span>
         </div>
       )}
 
@@ -225,14 +224,14 @@ const LogoText = ({ s, color, glowing = false, ref }: LogoTextProps) => {
         Q
       </text>
 
-      {/* Dot - Pink colored */}
+      {/* Dot - White for contrast on pink background */}
       <circle
         cx={s.d * 1.58}
         cy={s.d * 0.78 - s.dotOffset}
         r={s.dot / 2}
-        fill="#ff3366"
+        fill="#ffffff"
         style={{
-          filter: glowing ? "drop-shadow(0 0 6px rgba(255, 51, 102, 0.9))" : "drop-shadow(0 0 4px rgba(255, 51, 102, 0.6))",
+          filter: glowing ? "drop-shadow(0 0 6px rgba(255, 255, 255, 0.9))" : "drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))",
         }}
       />
     </svg>
