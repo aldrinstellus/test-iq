@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   CheckCircle2,
@@ -10,10 +11,36 @@ import {
 import MetricCard from '@/components/dtq/MetricCard';
 import TrendChart from '@/components/dtq/TrendChart';
 import LiveIndicator from '@/components/dtq/LiveIndicator';
+import MetricDrillDownModal from '@/components/dtq/modals/MetricDrillDownModal';
+import ChartDrillDownModal from '@/components/dtq/modals/ChartDrillDownModal';
 import { useRealTimeSimulation } from '@/hooks/useRealTimeSimulation';
+
+interface ChartDataPoint {
+  date: string;
+  value: number;
+}
+
+interface SelectedMetric {
+  key: string;
+  label: string;
+  value: number;
+  unit: string;
+  trend?: 'up' | 'down' | 'stable';
+  trendValue?: string;
+}
+
+interface SelectedChartPoint {
+  dataPoint: ChartDataPoint;
+  metricLabel: string;
+  allData: ChartDataPoint[];
+}
 
 export default function HistoryPage() {
   const { dailyMetrics, lastUpdate, isLive, toggleLive } = useRealTimeSimulation(true);
+
+  // Modal state management
+  const [selectedMetric, setSelectedMetric] = useState<SelectedMetric | null>(null);
+  const [selectedChartPoint, setSelectedChartPoint] = useState<SelectedChartPoint | null>(null);
 
   // Calculate 30-day averages
   const avgPassRate = Math.round(
@@ -38,6 +65,16 @@ export default function HistoryPage() {
   const defectData = dailyMetrics.map(m => ({ date: m.date, value: m.defectDetection }));
   const effectivenessData = dailyMetrics.map(m => ({ date: m.date, value: m.effectiveness }));
 
+  // Metric click handlers
+  const handleMetricClick = (metric: SelectedMetric) => {
+    setSelectedMetric(metric);
+  };
+
+  // Chart point click handlers
+  const handleChartPointClick = (dataPoint: ChartDataPoint, metricLabel: string, allData: ChartDataPoint[]) => {
+    setSelectedChartPoint({ dataPoint, metricLabel, allData });
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -54,7 +91,7 @@ export default function HistoryPage() {
         <LiveIndicator lastUpdate={lastUpdate} isLive={isLive} onToggle={toggleLive} />
       </div>
 
-      {/* Summary Cards */}
+      {/* Summary Cards - All clickable with drill-down */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
           label="Average Pass Rate"
@@ -63,6 +100,14 @@ export default function HistoryPage() {
           delay={0.1}
           accentColor="var(--status-success)"
           size="large"
+          onClick={() => handleMetricClick({
+            key: 'passRate',
+            label: 'Average Pass Rate',
+            value: avgPassRate,
+            unit: '%',
+            trend: 'up',
+            trendValue: '+2.3%',
+          })}
         />
         <MetricCard
           label="First Pass Rate"
@@ -71,6 +116,14 @@ export default function HistoryPage() {
           delay={0.15}
           accentColor="var(--accent-primary)"
           size="large"
+          onClick={() => handleMetricClick({
+            key: 'firstRunPassRate',
+            label: 'First Pass Rate',
+            value: avgFirstPassRate,
+            unit: '%',
+            trend: 'up',
+            trendValue: '+1.8%',
+          })}
         />
         <MetricCard
           label="Defect Detection"
@@ -79,6 +132,14 @@ export default function HistoryPage() {
           delay={0.2}
           accentColor="var(--risk-medium)"
           size="large"
+          onClick={() => handleMetricClick({
+            key: 'defectDetection',
+            label: 'Defect Detection',
+            value: avgDefectDetection,
+            unit: '%',
+            trend: 'stable',
+            trendValue: '+0.5%',
+          })}
         />
         <MetricCard
           label="Test Effectiveness"
@@ -87,10 +148,18 @@ export default function HistoryPage() {
           delay={0.25}
           accentColor="var(--chart-secondary)"
           size="large"
+          onClick={() => handleMetricClick({
+            key: 'effectiveness',
+            label: 'Test Effectiveness',
+            value: avgEffectiveness,
+            unit: '%',
+            trend: 'up',
+            trendValue: '+3.1%',
+          })}
         />
       </div>
 
-      {/* Trend Charts Grid */}
+      {/* Trend Charts Grid - All with clickable data points */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <TrendChart
           title="Test Pass Rate Trend"
@@ -98,6 +167,7 @@ export default function HistoryPage() {
           type="line"
           color="var(--status-success)"
           delay={0.3}
+          onDataPointClick={(dp) => handleChartPointClick(dp, 'Test Pass Rate', passRateData)}
         />
         <TrendChart
           title="First Run Pass Rate"
@@ -105,6 +175,7 @@ export default function HistoryPage() {
           type="line"
           color="var(--accent-primary)"
           delay={0.35}
+          onDataPointClick={(dp) => handleChartPointClick(dp, 'First Run Pass Rate', firstPassData)}
         />
         <TrendChart
           title="Defect Detection Percentage"
@@ -112,6 +183,7 @@ export default function HistoryPage() {
           type="area"
           color="var(--risk-medium)"
           delay={0.4}
+          onDataPointClick={(dp) => handleChartPointClick(dp, 'Defect Detection', defectData)}
         />
         <TrendChart
           title="Test Case Effectiveness"
@@ -119,8 +191,32 @@ export default function HistoryPage() {
           type="area"
           color="var(--chart-secondary)"
           delay={0.45}
+          onDataPointClick={(dp) => handleChartPointClick(dp, 'Test Effectiveness', effectivenessData)}
         />
       </div>
+
+      {/* Metric Drill-Down Modal */}
+      <MetricDrillDownModal
+        isOpen={!!selectedMetric}
+        onClose={() => setSelectedMetric(null)}
+        metricKey={selectedMetric?.key || ''}
+        metricLabel={selectedMetric?.label || ''}
+        currentValue={selectedMetric?.value || 0}
+        unit={selectedMetric?.unit}
+        trend={selectedMetric?.trend}
+        trendValue={selectedMetric?.trendValue}
+        dailyMetrics={dailyMetrics}
+        previousPeriodValue={selectedMetric ? selectedMetric.value - 2.5 : undefined}
+      />
+
+      {/* Chart Point Drill-Down Modal */}
+      <ChartDrillDownModal
+        isOpen={!!selectedChartPoint}
+        onClose={() => setSelectedChartPoint(null)}
+        dataPoint={selectedChartPoint?.dataPoint || null}
+        metricLabel={selectedChartPoint?.metricLabel || ''}
+        allData={selectedChartPoint?.allData || []}
+      />
     </div>
   );
 }
