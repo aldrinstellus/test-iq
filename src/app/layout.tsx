@@ -17,6 +17,9 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "dTQ - Testing IQ",
   description: "Real-time visibility into test coverage, quality metrics, and risk assessment",
+  icons: {
+    icon: "/dtq/icon",
+  },
 };
 
 export default function RootLayout({
