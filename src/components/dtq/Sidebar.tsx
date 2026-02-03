@@ -10,10 +10,10 @@ import {
   Crown,
   Users,
   Code,
-  Sparkles,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PersonaType } from '@/lib/dtq/types';
+import { TQLogo } from '@/components/brand/TQLogo';
 
 interface SidebarProps {
   persona: PersonaType;
@@ -45,21 +45,8 @@ export default function Sidebar({ persona, onPersonaChange }: SidebarProps) {
     >
       {/* Logo */}
       <div className="p-6 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
-        <Link href="/dashboard" className="flex items-center gap-3">
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: 'var(--accent-primary)' }}
-          >
-            <Sparkles className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h1 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>
-              Test IQ
-            </h1>
-            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-              Testing Intelligence
-            </p>
-          </div>
+        <Link href="/dashboard">
+          <TQLogo size="lg" showText />
         </Link>
       </div>
 

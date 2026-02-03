@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Test IQ | AI-Powered Testing Intelligence",
+  title: "dTQ - Testing IQ",
   description: "Real-time visibility into test coverage, quality metrics, and risk assessment",
 };
 
