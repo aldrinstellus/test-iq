@@ -40,14 +40,10 @@ export default function Sidebar({ persona, onPersonaChange }: SidebarProps) {
 
   return (
     <aside
-      className="w-64 flex flex-col border-r"
-      style={{
-        background: 'var(--bg-secondary)',
-        borderColor: 'var(--border-subtle)',
-      }}
+      className="sidebar w-64 flex flex-col"
     >
       {/* Logo */}
-      <div className="p-6 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
+      <div className="p-6 border-b" style={{ borderColor: 'var(--border-card)' }}>
         <Link href="/dashboard">
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <TQLogo size="lg" showText />
@@ -74,13 +70,13 @@ export default function Sidebar({ persona, onPersonaChange }: SidebarProps) {
               >
                 <motion.div
                   className={cn(
-                    'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all relative overflow-hidden'
+                    'sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all relative overflow-hidden',
+                    isActive && 'active'
                   )}
                   style={{
                     color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
-                    background: isActive ? 'var(--bg-elevated)' : 'transparent',
                   }}
-                  whileHover={!isActive ? { background: 'var(--bg-tertiary)' } : {}}
+                  whileHover={!isActive ? { scale: 1.02 } : {}}
                 >
                   {/* Sliding active indicator with glow */}
                   {isActive && (
@@ -138,7 +134,7 @@ export default function Sidebar({ persona, onPersonaChange }: SidebarProps) {
         </div>
 
         {/* Personas */}
-        <div className="pt-4 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
+        <div className="pt-4 border-t" style={{ borderColor: 'var(--border-card)' }}>
           <p className="text-xs font-medium uppercase tracking-wider mb-3 px-3" style={{ color: 'var(--text-muted)' }}>
             Demo Personas
           </p>
@@ -155,13 +151,13 @@ export default function Sidebar({ persona, onPersonaChange }: SidebarProps) {
                 onMouseEnter={() => setHoveredPersona(key)}
                 onMouseLeave={() => setHoveredPersona(null)}
                 className={cn(
-                  'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-left relative'
+                  'sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-left relative',
+                  isActive && 'active'
                 )}
                 style={{
                   color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
-                  background: isActive ? 'var(--bg-elevated)' : 'transparent',
                 }}
-                whileHover={!isActive ? { background: 'var(--bg-tertiary)' } : {}}
+                whileHover={!isActive ? { scale: 1.02 } : {}}
               >
                 {/* Smooth transition icon container */}
                 <motion.div
@@ -213,7 +209,7 @@ export default function Sidebar({ persona, onPersonaChange }: SidebarProps) {
       </nav>
 
       {/* Footer with enhanced live indicator */}
-      <div className="p-4 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
+      <div className="p-4 border-t" style={{ borderColor: 'var(--border-card)' }}>
         <motion.div
           className="px-3 py-2 rounded-lg text-xs"
           style={{ background: 'var(--bg-tertiary)', color: 'var(--text-muted)' }}

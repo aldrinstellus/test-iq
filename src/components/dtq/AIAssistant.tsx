@@ -107,11 +107,7 @@ export default function AIAssistant() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.4 }}
-      className="rounded-xl overflow-hidden flex flex-col h-[500px]"
-      style={{
-        background: 'var(--bg-secondary)',
-        border: '1px solid var(--border-subtle)',
-      }}
+      className="glass-card rounded-xl overflow-hidden flex flex-col h-[500px]"
     >
       {/* Header */}
       <div className="p-5 border-b" style={{ borderColor: 'var(--border-subtle)' }}>

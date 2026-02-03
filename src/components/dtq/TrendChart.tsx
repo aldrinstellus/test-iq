@@ -110,11 +110,7 @@ export default function TrendChart({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay }}
-      className="rounded-xl p-5 transition-all duration-300"
-      style={{
-        background: 'var(--bg-secondary)',
-        border: '1px solid var(--border-subtle)',
-      }}
+      className="card rounded-xl p-5 transition-all duration-300"
       onMouseEnter={() => setIsChartHovered(true)}
       onMouseLeave={() => setIsChartHovered(false)}
     >

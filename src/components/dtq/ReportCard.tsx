@@ -31,13 +31,7 @@ export default function ReportCard({ report, delay = 0, onViewIssues }: ReportCa
       transition={{ duration: 0.3, delay }}
     >
       <ScaleOnHover scale={1.02} glowColor="rgba(255, 51, 102, 0.1)">
-        <div
-          className="rounded-xl p-5 transition-all"
-          style={{
-            background: 'var(--bg-secondary)',
-            border: '1px solid var(--border-subtle)',
-          }}
-        >
+        <div className="card rounded-xl p-5 transition-all">
           <div className="flex items-start justify-between mb-4">
             <div>
               <h3 className="font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>

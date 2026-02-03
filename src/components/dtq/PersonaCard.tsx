@@ -48,11 +48,7 @@ export default function PersonaCard({ persona }: PersonaCardProps) {
           stiffness: 300,
           damping: 25,
         }}
-        className="relative overflow-hidden rounded-xl p-5"
-        style={{
-          background: 'var(--bg-secondary)',
-          border: '1px solid var(--border-subtle)',
-        }}
+        className="card relative overflow-hidden rounded-xl p-5"
       >
         {/* Animated gradient background */}
         <motion.div

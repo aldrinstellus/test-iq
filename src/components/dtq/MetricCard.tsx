@@ -71,15 +71,10 @@ export default function MetricCard({
       <CardWrapper {...wrapperProps}>
         <div
           className={cn(
-            'relative overflow-hidden rounded-xl p-5 transition-all duration-300',
+            'metric-card relative overflow-hidden rounded-xl p-5 transition-all duration-300',
             size === 'large' && 'p-6',
-            interactive && 'hover:border-[var(--border-accent)]',
             isHovered && interactive && 'gradient-border'
           )}
-          style={{
-            background: 'var(--bg-secondary)',
-            border: '1px solid var(--border-subtle)',
-          }}
         >
           {/* Accent gradient - animated on hover */}
           <motion.div

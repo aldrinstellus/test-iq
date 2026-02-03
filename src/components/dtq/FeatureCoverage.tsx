@@ -86,11 +86,7 @@ export default function FeatureCoverage({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.3 }}
-      className="rounded-xl overflow-hidden"
-      style={{
-        background: 'var(--bg-secondary)',
-        border: '1px solid var(--border-subtle)',
-      }}
+      className="card rounded-xl overflow-hidden"
     >
       {/* Header */}
       <div className="p-5 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
